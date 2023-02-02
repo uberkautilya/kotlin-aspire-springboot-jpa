@@ -4,7 +4,7 @@ import io.mcm.springbootwithjava.model.Book;
 
 import java.util.List;
 
-public interface BookRepository {
+public interface BookDAO {
     public List<Book> add(List<Book> bookList);
 
     public List<Book> findAll();

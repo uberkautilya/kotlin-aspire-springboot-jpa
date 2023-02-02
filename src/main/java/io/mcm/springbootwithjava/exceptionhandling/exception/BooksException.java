@@ -1,4 +1,4 @@
-package io.mcm.springbootwithjava.exception;
+package io.mcm.springbootwithjava.exceptionhandling.exception;
 
 import io.mcm.springbootwithjava.model.Book;
 

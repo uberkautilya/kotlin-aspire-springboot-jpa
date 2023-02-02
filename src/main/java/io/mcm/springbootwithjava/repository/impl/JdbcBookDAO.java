@@ -1,19 +1,24 @@
 package io.mcm.springbootwithjava.repository.impl;
 
 import io.mcm.springbootwithjava.model.Book;
-import io.mcm.springbootwithjava.repository.BookRepository;
+import io.mcm.springbootwithjava.repository.BookDAO;
 import io.mcm.springbootwithjava.rsextractor.BooksExtractor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
+import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class JdbcBookRepository implements BookRepository {
+@Component
+public class JdbcBookDAO implements BookDAO {
     @Autowired
     NamedParameterJdbcTemplate jdbcTemplate;
+    private static final Logger LOGGER = LoggerFactory.getLogger(JdbcBookDAO.class);
 
     @Override
     public List<Book> add(List<Book> bookList) {
@@ -25,7 +30,7 @@ public class JdbcBookRepository implements BookRepository {
             parameterMap.put("author", book.getAuthor());
             parameterMap.put("publishedDate", book.getPublishedDate());
             parameterMap.put("issued", book.getIsIssued());
-            String insertStatement = "INSERT INTO books (id, price, publishedDate, author, issued) values (:id, :price, :publishedDate, :author, :issued)";
+            String insertStatement = "INSERT INTO books (id, price, publishedDate, author, isIssued) values (:id, :price, :publishedDate, :author, :issued)";
             int rowsUpdated = jdbcTemplate.update(insertStatement, parameterMap);
             if (rowsUpdated > 0) {
                 addedBooks.add(book);
@@ -43,7 +48,9 @@ public class JdbcBookRepository implements BookRepository {
     @Override
     public Book findById(Long id) {
         String queryString = "SELECT * FROM learn_kotlin.books where id = :id";
-        List<Book> bookList = jdbcTemplate.query(queryString, new BooksExtractor());
+        Map<String, Object> parameterMap = new HashMap<>();
+        parameterMap.put("id", id);
+        List<Book> bookList = jdbcTemplate.query(queryString, parameterMap, new BooksExtractor());
         if (null == bookList || bookList.size() == 0) {
             return null;
         }

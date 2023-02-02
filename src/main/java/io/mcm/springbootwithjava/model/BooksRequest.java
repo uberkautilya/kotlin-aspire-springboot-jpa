@@ -5,6 +5,9 @@ import java.util.List;
 public class BooksRequest {
     List<Book> bookList;
 
+    public BooksRequest() {
+    }
+
     public BooksRequest(List<Book> bookList) {
         this.bookList = bookList;
     }
