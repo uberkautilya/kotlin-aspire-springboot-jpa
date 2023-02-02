@@ -3,7 +3,7 @@ package io.mcm.springbootwithjava.service;
 import io.mcm.springbootwithjava.exceptionhandling.exception.BooksException;
 import io.mcm.springbootwithjava.model.Book;
 import io.mcm.springbootwithjava.model.BooksResponse;
-import io.mcm.springbootwithjava.repository.impl.JdbcBookDAO;
+import io.mcm.springbootwithjava.dao.impl.JdbcBookDAO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

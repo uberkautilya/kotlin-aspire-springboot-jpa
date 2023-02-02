@@ -1,4 +1,4 @@
-package io.mcm.springbootwithjava.repository;
+package io.mcm.springbootwithjava.dao;
 
 import io.mcm.springbootwithjava.model.Book;
 

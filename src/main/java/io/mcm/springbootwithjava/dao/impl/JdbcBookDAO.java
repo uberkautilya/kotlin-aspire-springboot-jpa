@@ -1,7 +1,7 @@
-package io.mcm.springbootwithjava.repository.impl;
+package io.mcm.springbootwithjava.dao.impl;
 
 import io.mcm.springbootwithjava.model.Book;
-import io.mcm.springbootwithjava.repository.BookDAO;
+import io.mcm.springbootwithjava.dao.BookDAO;
 import io.mcm.springbootwithjava.rsextractor.BooksExtractor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
