@@ -1,6 +1,6 @@
 package io.mcm.springbootwithjava.exceptionhandling.exception;
 
-import io.mcm.springbootwithjava.model.Book;
+import io.mcm.springbootwithjava.model.entities.Book;
 
 import java.util.List;
 

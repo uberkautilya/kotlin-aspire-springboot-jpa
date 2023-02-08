@@ -1,5 +1,7 @@
 package io.mcm.springbootwithjava.model;
 
+import io.mcm.springbootwithjava.model.entities.Book;
+
 import java.util.List;
 
 public class BooksRequest {

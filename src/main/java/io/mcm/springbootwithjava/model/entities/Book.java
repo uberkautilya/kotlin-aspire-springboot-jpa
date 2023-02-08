@@ -1,8 +1,13 @@
-package io.mcm.springbootwithjava.model;
+package io.mcm.springbootwithjava.model.entities;
 
+import javax.persistence.*;
 import java.util.Date;
 
+@Entity
+@Table(name = "books")
 public class Book {
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     Long id;
     Double price;
     Date publishedDate;

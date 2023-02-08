@@ -22,7 +22,7 @@ public class BooksController {
     @PostMapping
     public ResponseEntity<BooksResponse> addBooks(@RequestBody BooksRequest booksRequest) {
         LOGGER.info("BooksController:: addBooks({})", booksRequest);
-        BooksResponse booksResponse = booksService.addBooks(booksRequest.getBookList());
+        BooksResponse booksResponse = booksService.save(booksRequest.getBookList());
         return ResponseEntity.ok(booksResponse);
     }
 

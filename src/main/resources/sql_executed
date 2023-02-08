@@ -1,6 +1,6 @@
 create database learn_kotlin;
 
-create table books (
+create table learn_kotlin.books (
   id BIGINT PRIMARY KEY,
   price DOUBLE(7,2),
   publishedDate TIMESTAMP,
