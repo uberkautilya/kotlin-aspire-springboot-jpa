@@ -1,12 +1,19 @@
 package io.mcm.springbootwithjava.service;
 
 import io.mcm.springbootwithjava.exceptionhandling.exception.BooksException;
-import io.mcm.springbootwithjava.model.entities.Book;
+import io.mcm.springbootwithjava.model.BooksRequest;
 import io.mcm.springbootwithjava.model.BooksResponse;
+import io.mcm.springbootwithjava.model.entities.Book;
 import io.mcm.springbootwithjava.repository.BookRepository;
+import io.mcm.springbootwithjava.specification.BookSpecification;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -16,9 +23,13 @@ import java.util.Optional;
 @Service
 public class BooksService {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(BooksService.class);
     @Autowired
     private BookRepository bookRepository;
-    private static final Logger LOGGER = LoggerFactory.getLogger(BooksService.class);
+    @Autowired
+    private BookSpecification bookSpecification;
+    @Value("${pagination.page.size.default}")
+    private Integer defaultPageSize;
 
     public BooksResponse save(List<Book> bookList) {
         List<Book> booksAdded = new ArrayList<>();
@@ -70,4 +81,41 @@ public class BooksService {
         BooksResponse booksResponse = new BooksResponse(List.of(bookById.get()));
         return booksResponse;
     }
+
+
+    //-------------
+
+    public BooksResponse getBookFiltered(BooksRequest request) {
+        List<Book> list = null;
+        Page<Book> pages = null;
+        if (request.getPageNumber() == null) {
+            pages = new PageImpl<>(bookRepository.findAll(bookSpecification.getBooks(request)));
+        } else {
+            if (request.getPageSize() == null) {
+                request.setPageSize(defaultPageSize);
+            }
+            LOGGER.info("BooksService.getBookFiltered: pageNumber: {}, pageSize: {}", request.getPageNumber(), request.getPageSize());
+            Pageable pageable = PageRequest.of(request.getPageNumber() - 1, request.getPageSize());
+            pages = bookRepository.findAll(bookSpecification.getBooks(request), pageable);
+        }
+        if (pages != null && pages.getContent() != null) {
+            list = pages.getContent();
+            if (list.size() > 0) {
+                BooksResponse booksResponse = new BooksResponse(new ArrayList<Book>());
+                booksResponse.setTotalPages(pages.getTotalPages());
+                booksResponse.setTotalCount(pages.getTotalElements());
+                booksResponse.setPageNo(pages.getNumber() + 1);
+                for (Book book : list) {
+                    /*BookResponseDto obj = new BookResponseDto();
+                    obj.populateObject(book);*/
+                    booksResponse.getBookList().add(book);
+                }
+                return booksResponse;
+            }
+        }
+        return null;
+    }
+
+
 }
+

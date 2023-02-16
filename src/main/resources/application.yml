@@ -9,3 +9,8 @@ spring:
     hibernate:
       ddl-auto: create-drop
     database-platform: org.hibernate.dialect.MySQL8Dialect
+
+pagination:
+  page:
+    size:
+      default: 2

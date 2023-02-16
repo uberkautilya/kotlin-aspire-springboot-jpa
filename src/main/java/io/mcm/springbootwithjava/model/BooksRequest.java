@@ -6,6 +6,19 @@ import java.util.List;
 
 public class BooksRequest {
     List<Book> bookList;
+    Integer pageNumber;
+    Integer pageSize;
+    Book bookFilter;
+
+    @Override
+    public String toString() {
+        return "BooksRequest{" +
+                "bookList=" + bookList +
+                ", pageNumber=" + pageNumber +
+                ", pageSize=" + pageSize +
+                ", bookFilter=" + bookFilter +
+                '}';
+    }
 
     public BooksRequest() {
     }
@@ -14,11 +27,12 @@ public class BooksRequest {
         this.bookList = bookList;
     }
 
-    @Override
-    public String toString() {
-        return "RequestBody{" +
-                "bookList=" + bookList +
-                '}';
+    public Integer getPageNumber() {
+        return pageNumber;
+    }
+
+    public void setPageNumber(Integer pageNumber) {
+        this.pageNumber = pageNumber;
     }
 
     public List<Book> getBookList() {
@@ -27,5 +41,21 @@ public class BooksRequest {
 
     public void setBookList(List<Book> bookList) {
         this.bookList = bookList;
+    }
+
+    public Integer getPageSize() {
+        return pageSize;
+    }
+
+    public void setPageSize(Integer pageSize) {
+        this.pageSize = pageSize;
+    }
+
+    public Book getBookFilter() {
+        return bookFilter;
+    }
+
+    public void setBookFilter(Book bookFilter) {
+        this.bookFilter = bookFilter;
     }
 }

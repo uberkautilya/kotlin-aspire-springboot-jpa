@@ -26,6 +26,13 @@ public class BooksController {
         return ResponseEntity.ok(booksResponse);
     }
 
+    @PostMapping("/filtered")
+    public ResponseEntity<BooksResponse> getBookFiltered(@RequestBody BooksRequest booksRequest) {
+        LOGGER.info("BooksController.getBookFiltered: booksRequest: " + booksRequest);
+        BooksResponse booksResponse = booksService.getBookFiltered(booksRequest);
+        return ResponseEntity.ok(booksResponse);
+    }
+
     @GetMapping
     public ResponseEntity<BooksResponse> findAll() {
         LOGGER.info("BooksController:: findAll() method");

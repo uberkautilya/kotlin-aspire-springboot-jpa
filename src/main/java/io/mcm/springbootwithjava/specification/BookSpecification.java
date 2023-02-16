@@ -1,30 +1,28 @@
 package io.mcm.springbootwithjava.specification;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.persistence.criteria.Predicate;
-
+import io.mcm.springbootwithjava.model.BooksRequest;
+import io.mcm.springbootwithjava.model.entities.Book;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Component;
 
-import io.mcm.springbootwithjava.model.entities.Book;
-import io.mcm.springbootwithjava.model.BooksRequest;
-import org.springframework.util.CollectionUtils;
+import javax.persistence.criteria.Predicate;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
 
 @Component
 public class BookSpecification {
 
     public Specification<Book> getBooks(BooksRequest request) {
         return (root, query, criteriaBuilder) -> {
-
             List<Predicate> predicates = new ArrayList<>();
+
             Book bookFilter;
-            if (null != request && CollectionUtils.isEmpty(request.getBookList())) {
-                bookFilter = request.getBookList().get(0);
+            if (Objects.nonNull(request) || Objects.nonNull(request.getBookFilter())) {
+                bookFilter = request.getBookFilter();
             } else {
                 System.out.println("The request book parameters are not provided");
-                return null;
+                return criteriaBuilder.and(predicates.toArray(new Predicate[0]));
             }
 
             if (bookFilter.getIsIssued() != null) {
@@ -41,7 +39,8 @@ public class BookSpecification {
             query.orderBy(criteriaBuilder.desc(root.get("publishedDate")));
 
             return criteriaBuilder.and(predicates.toArray(new Predicate[0]));
-
         };
     }
+
+
 }
