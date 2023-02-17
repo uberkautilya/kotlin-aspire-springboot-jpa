@@ -106,8 +106,6 @@ public class BooksService {
                 booksResponse.setTotalCount(pages.getTotalElements());
                 booksResponse.setPageNo(pages.getNumber() + 1);
                 for (Book book : list) {
-                    /*BookResponseDto obj = new BookResponseDto();
-                    obj.populateObject(book);*/
                     booksResponse.getBookList().add(book);
                 }
                 return booksResponse;

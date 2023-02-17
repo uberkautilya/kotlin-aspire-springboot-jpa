@@ -19,7 +19,7 @@ public interface BookRepository extends JpaRepository<Book, Long>, JpaSpecificat
             @Param("author") String author,
             @Param("isIssues") Boolean isIssued);
 
-    public Page<Book> findAll(Specification<Book> spec, Pageable pageable);
+    public Page<Book> findAll(Specification<Book> specification, Pageable pageable);
 
     public List<Book> findAll(Specification<Book> specification);
 }

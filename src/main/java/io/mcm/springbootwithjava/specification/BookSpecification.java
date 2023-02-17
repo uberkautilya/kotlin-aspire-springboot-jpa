@@ -1,5 +1,6 @@
 package io.mcm.springbootwithjava.specification;
 
+import io.mcm.springbootwithjava.model.BookFilter;
 import io.mcm.springbootwithjava.model.BooksRequest;
 import io.mcm.springbootwithjava.model.entities.Book;
 import org.springframework.data.jpa.domain.Specification;
@@ -15,29 +16,30 @@ public class BookSpecification {
 
     public Specification<Book> getBooks(BooksRequest request) {
         return (root, query, criteriaBuilder) -> {
+
+            if (Objects.isNull(request) || Objects.isNull(request.getBookFilter())) {
+                System.out.println("The request book parameters are not provided");
+                return criteriaBuilder.and(new Predicate[0]);
+            }
+            BookFilter bookFilter = request.getBookFilter();
             List<Predicate> predicates = new ArrayList<>();
 
-            Book bookFilter;
-            if (Objects.nonNull(request) || Objects.nonNull(request.getBookFilter())) {
-                bookFilter = request.getBookFilter();
-            } else {
-                System.out.println("The request book parameters are not provided");
-                return criteriaBuilder.and(predicates.toArray(new Predicate[0]));
-            }
-
-            if (bookFilter.getIsIssued() != null) {
+            if (Objects.nonNull(bookFilter.getIsIssued())) {
                 predicates.add(criteriaBuilder.equal(root.get("isIssued"), bookFilter.getIsIssued()));
             }
-            if (bookFilter.getAuthor() != null && !bookFilter.getAuthor().isEmpty()) {
+            if (Objects.nonNull(bookFilter.getAuthor()) && !bookFilter.getAuthor().isBlank()) {
                 predicates.add(criteriaBuilder.like(criteriaBuilder.lower(root.get("author")),
                         "%" + bookFilter.getAuthor().toLowerCase() + "%"));
             }
-            if (bookFilter.getPrice() != null) {
+            if (Objects.nonNull(bookFilter.getPrice())) {
                 predicates.add(criteriaBuilder.equal(root.get("price"), bookFilter.getPrice()));
             }
 
-            query.orderBy(criteriaBuilder.desc(root.get("publishedDate")));
-
+            if (Objects.nonNull(bookFilter.getOrderBy()) && !bookFilter.getOrderBy().isBlank()) {
+                query.orderBy(criteriaBuilder.desc(root.get(bookFilter.getOrderBy())));
+            } else {
+                query.orderBy(criteriaBuilder.asc(root.get("isIssued")));
+            }
             return criteriaBuilder.and(predicates.toArray(new Predicate[0]));
         };
     }

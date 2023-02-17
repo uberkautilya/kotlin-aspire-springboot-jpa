@@ -8,7 +8,7 @@ public class BooksRequest {
     List<Book> bookList;
     Integer pageNumber;
     Integer pageSize;
-    Book bookFilter;
+    BookFilter bookFilter;
 
     @Override
     public String toString() {
@@ -51,11 +51,11 @@ public class BooksRequest {
         this.pageSize = pageSize;
     }
 
-    public Book getBookFilter() {
+    public BookFilter getBookFilter() {
         return bookFilter;
     }
 
-    public void setBookFilter(Book bookFilter) {
+    public void setBookFilter(BookFilter bookFilter) {
         this.bookFilter = bookFilter;
     }
 }
